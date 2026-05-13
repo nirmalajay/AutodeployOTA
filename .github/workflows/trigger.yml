@@ -1,0 +1,35 @@
+name: OTA Package & Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Firmware version (e.g. 1.2.0)"
+        required: true
+
+jobs:
+  package-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests minio paho-mqtt
+
+      - name: Package & upload via API
+        env:
+          API_URL: ${{ secrets.API_URL }}  
+        run: |
+          python3 backend/"package_and _upload.py" \
+            --version ${{ github.event.inputs.version }}
+
+      - name: Confirm deployment
+        run: |
+          echo "Firmware ${{ github.event.inputs.version }} packaged, uploaded to MinIO, and vehicles notified via MQTT"

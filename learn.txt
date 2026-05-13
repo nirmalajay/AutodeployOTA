@@ -1,0 +1,13 @@
+docker exec -it mqtt mosquitto_sub -t vehicle #to subscribe
+docker exec -it mqtt mosquitto_pub -t vehicle -m "Hello from Docker!" #to publish
+
+docker compose up -d #to start the container in background
+docker compose down #to stop the container
+
+used shutil to create a zip file:
+
+
+fastapi dev main.py #to run the server 24/7
+
+docker compose up "runs main.py , minio, and mosquitto 24/7 in background"
+tigger.yml "trigger the workflow to zip and upload files to minio, then notify the vehicles"

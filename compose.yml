@@ -1,0 +1,41 @@
+services:
+  mqtt:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mqtt/config/mqtt.conf:/mosquitto/config/mosquitto.conf
+    restart: always
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: udumalpet
+      MINIO_CONSOLE_ADDRESS: ":9001"
+    command: server /data --console-address ":9001"
+    restart: always
+    volumes:
+      - ./minio/data:/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8000:8000"
+    environment:
+      MINIO_ENDPOINT: minio:9000       
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: udumalpet
+      MQTT_BROKER: mqtt                 
+    depends_on:
+      - minio
+      - mqtt
+    restart: always
