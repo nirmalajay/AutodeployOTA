@@ -23,9 +23,13 @@ jobs:
       - name: Install dependencies
         run: pip install requests minio paho-mqtt
 
+      - name: Start Infra - Backend
+        run: |
+          docker compose up -d
+          echo "Waiting for services to boot..."
+          sleep 10
+
       - name: Package & upload via API
-        env:
-          API_URL: ${{ secrets.API_URL }}  
         run: |
           python3 backend/"package_and _upload.py" \
             --version ${{ github.event.inputs.version }}
