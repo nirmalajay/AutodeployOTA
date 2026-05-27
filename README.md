@@ -186,7 +186,7 @@ The simulated ECU:
 ## Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/nirmalajay/AutodeployOTA.git
 cd autodeploy
 ```
 
@@ -286,17 +286,6 @@ The overall workflow resembles how modern automotive systems handle:
 - remote diagnostics,
 - and cloud-managed software delivery.
 
----
-
-# Screenshots
-
-_Add screenshots here_
-
-- CI/CD pipeline
-- dashboard
-- update logs
-- MinIO storage
-- vehicle simulator output
 
 ---
 
@@ -312,7 +301,3 @@ Even though this is a simplified implementation, it helped me connect:
 into one complete system.
 
 ---
-
-# License
-
-MIT License
