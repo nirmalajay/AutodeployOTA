@@ -1,3 +1,6 @@
 fastapi[standard]
 minio
 paho-mqtt
+
+pytest
+httpx

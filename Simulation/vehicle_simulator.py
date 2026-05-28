@@ -5,9 +5,9 @@ import os
 import re
 from packaging.version import Version, InvalidVersion
 
-MQTT_BROKER = "localhost"
-MQTT_PORT = 1883
-MQTT_TOPIC = "vehicle/ota"
+MQTT_BROKER = os.getenv("MQTT_BROKER", "localhost")
+MQTT_PORT   = int(os.getenv("MQTT_PORT", "1883"))
+MQTT_TOPIC  = "vehicle/ota"
 DOWNLOAD_DIR = "./downloads"
 
 CURRENT_VERSION = Version("1.0.0")

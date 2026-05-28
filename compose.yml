@@ -39,3 +39,4 @@ services:
       - minio
       - mqtt
     restart: always
+

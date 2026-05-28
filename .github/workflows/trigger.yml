@@ -9,31 +9,33 @@ on:
 
 jobs:
   package-and-deploy:
-    runs-on: ubuntu-latest
-
+    runs-on: self-hosted
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
 
-      - name: Install dependencies
-        run: pip install requests minio paho-mqtt
+      - name: Install Python dependencies
+        run: pip3 install requests minio paho-mqtt packaging
 
-      - name: Start Infra - Backend
+      - name: Start Infra (mqtt, minio, backend)
         run: |
-          docker compose up -d
-          echo "Waiting for services to boot..."
+          docker compose up -d --remove-orphans
+          echo "Waiting for services to be ready..."
           sleep 10
 
-      - name: Package & upload via API
+      - name: Run pytest (API tests)
+        run: |
+          cd backend
+          pip3 install pytest httpx fastapi
+          python3 -m pytest tests/test_upload.py -v
+
+      - name: Package & Upload Firmware via API
         run: |
           python3 backend/"package_and _upload.py" \
             --version ${{ github.event.inputs.version }}
 
-      - name: Confirm deployment
+      - name: Confirm Deployment
         run: |
-          echo "Firmware ${{ github.event.inputs.version }} packaged, uploaded to MinIO, and vehicles notified via MQTT"
+          echo " Firmware v${{ github.event.inputs.version }} uploaded to MinIO"
+          echo " MQTT notification sent to topic: vehicle/ota"
