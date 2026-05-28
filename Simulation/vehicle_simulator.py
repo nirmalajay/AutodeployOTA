@@ -94,7 +94,7 @@ def on_message(client, userdata, msg):
         print(f"Unexpected error: {e}")
 
 
-client = mqtt.Client()
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 client.on_connect = on_connect
 client.on_message = on_message
 
