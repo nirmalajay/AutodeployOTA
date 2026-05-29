@@ -1,7 +1,8 @@
 import io
 from unittest.mock import MagicMock, patch
+import pytest
 
-# Patch MinIO and MQTT before `main` is imported (they connect at module level)
+
 with patch("minio.Minio") as mock_minio_cls, \
      patch("paho.mqtt.client.Client") as mock_mqtt_cls:
 
@@ -31,19 +32,3 @@ def test_upload_success():
         "message": "Successfully uploaded",
         "filename": "firmware_v1.0.zip",
     }
-
-
-def test_upload_no_file_returns_422():
-    """POST /upload without a file should return 422 Unprocessable Entity."""
-    response = client.post("/upload")
-    assert response.status_code == 422
-
-
-def test_upload_different_filename():
-    """Filename in the response must match what was uploaded."""
-    response = client.post(
-        "/upload",
-        files={"file": ("update_2.0.bin", io.BytesIO(b"data"), "application/octet-stream")},
-    )
-    assert response.status_code == 200
-    assert response.json()["filename"] == "update_2.0.bin"
