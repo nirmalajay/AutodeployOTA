@@ -26,14 +26,14 @@ def parse_version_from_filename(filename: str):
     return None
 
 
-def on_connect(client, userdata, flags, rc):
-    if rc == 0:
+def on_connect(client, userdata, flags, reason_code, properties):
+    if not reason_code.is_failure:
         print(f"[Vehicle]  Connected to MQTT broker")
         print(f"[Vehicle]  Current firmware version: {CURRENT_VERSION}")
         client.subscribe(MQTT_TOPIC)
         print(f"[Vehicle]  Subscribed to topic: {MQTT_TOPIC}")
     else:
-        print(f"[Vehicle]  Connection failed with code {rc}")
+        print(f"[Vehicle]  Connection failed: {reason_code}")
 
 
 def on_message(client, userdata, msg):

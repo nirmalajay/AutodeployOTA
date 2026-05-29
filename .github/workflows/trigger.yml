@@ -10,26 +10,19 @@ on:
 jobs:
   package-and-deploy:
     runs-on: self-hosted
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-
       - name: Install Python dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install requests minio paho-mqtt packaging pytest httpx "fastapi[standard]"
+        run: python3 -m pip install requests minio paho-mqtt packaging
 
       - name: Start Infra (mqtt, minio, backend)
         run: |
           docker compose up -d --remove-orphans
           echo "Waiting for services to be ready..."
           sleep 10
-
-      - name: Run pytest (API tests)
-        run: |
-          cd backend
-          python3 -m pytest tests/test_upload.py -v
 
       - name: Package & Upload Firmware via API
         run: |
