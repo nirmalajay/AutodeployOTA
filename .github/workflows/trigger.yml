@@ -16,7 +16,9 @@ jobs:
 
 
       - name: Install Python dependencies
-        run: pip3 install requests minio paho-mqtt packaging
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install requests minio paho-mqtt packaging pytest httpx "fastapi[standard]"
 
       - name: Start Infra (mqtt, minio, backend)
         run: |
@@ -27,7 +29,6 @@ jobs:
       - name: Run pytest (API tests)
         run: |
           cd backend
-          pip3 install pytest httpx fastapi
           python3 -m pytest tests/test_upload.py -v
 
       - name: Package & Upload Firmware via API
