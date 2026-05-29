@@ -1,5 +1,6 @@
 from datetime import timedelta
 from fastapi import FastAPI, UploadFile, File
+from pydantic import BaseModel
 from minio import Minio
 import paho.mqtt.client as mqtt
 import json
@@ -24,6 +25,14 @@ if not minio_client.bucket_exists(BUCKET_NAME):
     minio_client.make_bucket(BUCKET_NAME)
 
 app = FastAPI()
+
+
+# --- Schemas ---
+
+class UploadResponse(BaseModel):
+    """Response schema for a successful firmware upload."""
+    message: str
+    filename: str
 
 
 # --- Helpers ---
@@ -68,10 +77,10 @@ def notify_vehicles(filename: str, size: int):
 #         }
 #     }
 
-@app.post("/upload")
+@app.post("/upload", response_model=UploadResponse)
 async def upload(file: UploadFile = File(...)):
     """Upload firmware to MinIO and notify vehicles via MQTT."""
     data = await file.read()
     minio_client.put_object(BUCKET_NAME, file.filename, io.BytesIO(data), len(data))
     notify_vehicles(file.filename, len(data))
-    return {"message": "Successfully uploaded", "filename": file.filename}
+    return UploadResponse(message="Successfully uploaded", filename=file.filename)
