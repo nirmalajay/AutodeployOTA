@@ -7,7 +7,7 @@ import json
 import os
 import io
 
-# --- Clients ---
+
 minio_client = Minio(
     os.getenv("MINIO_ENDPOINT", "localhost:9000"),
     access_key=os.getenv("MINIO_ROOT_USER", "minioadmin"),
@@ -27,7 +27,6 @@ if not minio_client.bucket_exists(BUCKET_NAME):
 app = FastAPI()
 
 
-# --- Schemas ---
 
 class UploadResponse(BaseModel):
     """Response schema for a successful firmware upload."""
@@ -35,7 +34,6 @@ class UploadResponse(BaseModel):
     filename: str
 
 
-# --- Helpers ---
 
 def get_presigned_url(filename: str) -> str:
     """Generate a 10-minute presigned download URL for a file in MinIO."""
