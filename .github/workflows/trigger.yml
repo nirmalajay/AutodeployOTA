@@ -19,8 +19,7 @@ jobs:
         run: python3 -m pip install requests minio paho-mqtt packaging
 
       - name: Run backend tests
-        run: python3 -m pytest tests/test_*.py
-        cwd: backend
+        run: python3 -m pytest backend/tests/test_*.py
 
       - name: Start Infra (mqtt, minio, backend)
         run: |
