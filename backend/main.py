@@ -29,14 +29,12 @@ app = FastAPI()
 
 
 class UploadResponse(BaseModel):
-    """Response schema for a successful firmware upload."""
     message: str
     filename: str
 
 
 
 def get_presigned_url(filename: str) -> str:
-    """Generate a 10-minute presigned download URL for a file in MinIO."""
     return minio_client.presigned_get_object(
         BUCKET_NAME,
         filename,
@@ -44,7 +42,6 @@ def get_presigned_url(filename: str) -> str:
     )
 
 def notify_vehicles(filename: str, size: int):
-    """Publish an OTA notification to all subscribed vehicles via MQTT."""
     msg = {
         "event": "new_firmware",
         "filename": filename,
@@ -58,7 +55,6 @@ def notify_vehicles(filename: str, size: int):
 
 # @app.get("/latest")
 # async def get_latest():
-#     """Returns the most recently uploaded firmware from MinIO."""
 #     objects = list(minio_client.list_objects(BUCKET_NAME))
 #     if not objects:
 #         return {"error": "No firmware files found in bucket"}
@@ -77,7 +73,6 @@ def notify_vehicles(filename: str, size: int):
 
 @app.post("/upload", response_model=UploadResponse)
 async def upload(file: UploadFile = File(...)):
-    """Upload firmware to MinIO and notify vehicles via MQTT."""
     data = await file.read()
     minio_client.put_object(BUCKET_NAME, file.filename, io.BytesIO(data), len(data))
     notify_vehicles(file.filename, len(data))

@@ -26,7 +26,6 @@ client = TestClient(app)
 
 
 def test_upload_success():
-    """POST /upload with a valid file should return 200 and correct body."""
     response = client.post(
         "/upload",
         files={"file": ("firmware_v1.0.zip", io.BytesIO(b"fake-binary"), "application/zip")},
