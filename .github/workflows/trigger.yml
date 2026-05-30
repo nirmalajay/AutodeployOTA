@@ -18,6 +18,10 @@ jobs:
       - name: Install Python dependencies
         run: python3 -m pip install requests minio paho-mqtt packaging
 
+      - name: Run backend tests
+        run: python3 -m pytest tests/test_*.py
+        cwd: backend
+
       - name: Start Infra (mqtt, minio, backend)
         run: |
           docker compose up -d --remove-orphans
