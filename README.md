@@ -193,21 +193,9 @@ python simulator.py
 
 ---
 
-## Run Dashboard
-
-```bash
-cd dashboard
-streamlit run dashboard.py
-```
-
----
-
 # Example OTA Flow
 
 ```text
-Current ECU Version : 1.0.1
-Available Version   : 1.0.2
-
 Downloading artifact...
 Installing update...
 Restarting ECU...
