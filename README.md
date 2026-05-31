@@ -61,7 +61,6 @@ Installation Status + Logs
 | Backend API | FastAPI |
 | Messaging | MQTT (Mosquitto) |
 | Artifact Storage | MinIO |
-| Dashboard | Streamlit |
 | Containers | Docker / Docker Compose |
 | Language | Python |
 
