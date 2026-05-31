@@ -79,36 +79,6 @@ Installation Status + Logs
 
 ---
 
-# Project Structure
-
-```text
-autodeploy/
-│
-├── backend/
-│   ├── app.py
-│   ├── ota_logic.py
-│   └── requirements.txt
-│
-├── vehicle_simulator/
-│   ├── simulator.py
-│   └── current_version.txt
-│
-├── dashboard/
-│   ├── dashboard.py
-│   └── requirements.txt
-│
-├── artifacts/
-│
-├── .github/workflows/
-│   └── pipeline.yml
-│
-├── docker-compose.yml
-├── README.md
-└── architecture.png
-```
-
----
-
 # How It Works
 
 ## 1. Developer Pushes New Code
